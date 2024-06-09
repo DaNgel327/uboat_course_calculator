@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_picker/flutter_picker.dart';
 
-class PickerDialog {
-  static Future<List<int>?> showPickerDialog({
+class PickerDialog<T> {
+  static showPickerDialog({
     required BuildContext context,
     required PickerData pickerData,
   }) =>
       Picker(
         itemExtent: 45,
-        diameterRatio: 4,
+        diameterRatio: 4.0,
         textAlign: TextAlign.center,
         squeeze: 0.9,
         height: 216,
@@ -17,6 +17,7 @@ class PickerDialog {
             colors: <Color>[Colors.cyan, Colors.teal],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
+            tileMode: TileMode.clamp,
           ),
         ),
         hideHeader: true,
@@ -27,7 +28,7 @@ class PickerDialog {
       ).showDialog(context);
 }
 
-class PickerData {
+class PickerData<T> {
   PickerData({
     required this.data,
     this.title = '',
@@ -35,8 +36,8 @@ class PickerData {
     this.onConfirm,
   });
 
-  final List<PickerItem<num>> data;
+  final List<PickerItem<T>> data;
   final String title;
   final TextStyle? selectedTextStyle;
-  final void Function(Picker, List<int>)? onConfirm;
+  final void Function(Picker, List<dynamic>)? onConfirm;
 }
