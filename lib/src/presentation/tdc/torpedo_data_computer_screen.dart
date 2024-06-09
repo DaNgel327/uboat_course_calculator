@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-
-import '../constants/string_constants.dart';
-import '../themes/tdc_theme.dart';
-import '../ui/course_dialog.dart';
-import '../ui/course_parameters_list_view.dart';
-import '../ui/recommendation_dialog.dart';
+import 'package:uboat_course_calculator/src/constants/string_constants.dart';
+import 'package:uboat_course_calculator/src/presentation/ui/course_dialog.dart';
+import 'package:uboat_course_calculator/src/presentation/ui/course_parameters_list_view.dart';
+import 'package:uboat_course_calculator/src/presentation/ui/recommendation_dialog.dart';
+import 'package:uboat_course_calculator/src/themes/tdc_theme.dart';
 
 class TorpedoDataComputerScreen extends StatefulWidget {
   const TorpedoDataComputerScreen({
@@ -15,14 +14,13 @@ class TorpedoDataComputerScreen extends StatefulWidget {
   final AnimationController animationController;
 
   @override
-  State<TorpedoDataComputerScreen> createState() =>
-      _TorpedoDataComputerScreenState();
+  State<TorpedoDataComputerScreen> createState() => _TorpedoDataComputerScreenState();
 }
 
 class _TorpedoDataComputerScreenState extends State<TorpedoDataComputerScreen>
     with TickerProviderStateMixin {
   List<Widget> listViews = <Widget>[];
-  double topBarOpacity = 0.0;
+  double topBarOpacity = 0;
 
   late final ScrollController scrollController;
   late final Animation<double> topBarAnimation;
@@ -31,7 +29,7 @@ class _TorpedoDataComputerScreenState extends State<TorpedoDataComputerScreen>
   void initState() {
     super.initState();
     scrollController = ScrollController();
-    topBarAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+    topBarAnimation = Tween<double>(begin: 0, end: 1).animate(
       CurvedAnimation(
         parent: widget.animationController,
         curve: const Interval(0, 0.5, curve: Curves.fastOutSlowIn),
@@ -46,9 +44,7 @@ class _TorpedoDataComputerScreenState extends State<TorpedoDataComputerScreen>
           topBarOpacity != scrollController.offset / 24 &&
           mounted) {
         setState(() => topBarOpacity = scrollController.offset / 24);
-      } else if (scrollController.offset <= 0 &&
-          topBarOpacity != 0.0 &&
-          mounted) {
+      } else if (scrollController.offset <= 0 && topBarOpacity != 0.0 && mounted) {
         setState(() => topBarOpacity = 0.0);
       }
     });
@@ -76,12 +72,12 @@ class _TorpedoDataComputerScreenState extends State<TorpedoDataComputerScreen>
       ]);
 
   Animation<double> getAnimation(int intervalFactor) {
-    return Tween<double>(begin: 0.0, end: 1.0).animate(
+    return Tween<double>(begin: 0, end: 1).animate(
       CurvedAnimation(
         parent: widget.animationController,
         curve: Interval(
           (1 / 9) * intervalFactor,
-          1.0,
+          1,
           curve: Curves.fastOutSlowIn,
         ),
       ),
@@ -105,7 +101,7 @@ class _TorpedoDataComputerScreenState extends State<TorpedoDataComputerScreen>
             scrollController: scrollController,
             data: listViews,
           ),
-          SizedBox(height: MediaQuery.of(context).padding.bottom)
+          SizedBox(height: MediaQuery.of(context).padding.bottom),
         ],
       ),
     );
@@ -127,23 +123,20 @@ class _BodyWidgetsListView extends StatelessWidget {
   Widget build(BuildContext context) {
     return FutureBuilder<bool>(
       future: builderData,
-      builder: (BuildContext context, AsyncSnapshot<bool> snapshot) =>
-          !snapshot.hasData
-              ? const SizedBox()
-              : ListView.builder(
-                  controller: scrollController,
-                  padding: EdgeInsets.only(
-                    bottom: 62 + MediaQuery.of(context).padding.bottom,
-                    top: AppBar().preferredSize.height +
-                        MediaQuery.of(context).padding.top +
-                        14,
-                  ),
-                  itemCount: data.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    animationController.forward();
-                    return data.elementAt(index);
-                  },
-                ),
+      builder: (BuildContext context, AsyncSnapshot<bool> snapshot) => !snapshot.hasData
+          ? const SizedBox()
+          : ListView.builder(
+              controller: scrollController,
+              padding: EdgeInsets.only(
+                bottom: 62 + MediaQuery.of(context).padding.bottom,
+                top: AppBar().preferredSize.height + MediaQuery.of(context).padding.top + 14,
+              ),
+              itemCount: data.length,
+              itemBuilder: (BuildContext context, int index) {
+                animationController.forward();
+                return data.elementAt(index);
+              },
+            ),
     );
   }
 
@@ -175,21 +168,21 @@ class _AppBarWidget extends StatelessWidget {
               opacity: topBarAnimation,
               child: Transform(
                 transform: Matrix4.translationValues(
-                  0.0,
+                  0,
                   30 * (1.0 - topBarAnimation.value),
-                  0.0,
+                  0,
                 ),
                 child: Container(
                   decoration: BoxDecoration(
                     color: TDCTheme.white.withOpacity(topBarOpacity),
                     borderRadius: const BorderRadius.only(
-                      bottomLeft: Radius.circular(32.0),
+                      bottomLeft: Radius.circular(32),
                     ),
                     boxShadow: <BoxShadow>[
                       BoxShadow(
                         color: TDCTheme.grey.withOpacity(0.4 * topBarOpacity),
                         offset: const Offset(1.1, 1.1),
-                        blurRadius: 10.0,
+                        blurRadius: 10,
                       ),
                     ],
                   ),
@@ -208,7 +201,7 @@ class _AppBarWidget extends StatelessWidget {
                           children: <Widget>[
                             Expanded(
                               child: Padding(
-                                padding: const EdgeInsets.all(8.0),
+                                padding: const EdgeInsets.all(8),
                                 child: Text(
                                   StringConstants.tabsTitle,
                                   textAlign: TextAlign.left,
@@ -224,14 +217,14 @@ class _AppBarWidget extends StatelessWidget {
                             ),
                           ],
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),
               ),
             );
           },
-        )
+        ),
       ],
     );
   }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import '../themes/tdc_theme.dart';
+import 'package:uboat_course_calculator/src/themes/tdc_theme.dart';
 
 class TitleView extends StatelessWidget {
   const TitleView({
@@ -27,9 +26,9 @@ class TitleView extends StatelessWidget {
             opacity: animation,
             child: Transform(
               transform: Matrix4.translationValues(
-                0.0,
+                0,
                 30 * (1.0 - animation.value),
-                0.0,
+                0,
               ),
               child: Padding(
                 padding: const EdgeInsets.only(left: 24, right: 24),
@@ -51,7 +50,7 @@ class TitleView extends StatelessWidget {
                     InkWell(
                       highlightColor: Colors.transparent,
                       borderRadius: const BorderRadius.all(
-                        Radius.circular(4.0),
+                        Radius.circular(4),
                       ),
                       onTap: () {},
                       child: Padding(
@@ -72,16 +71,12 @@ class TitleView extends StatelessWidget {
                             const SizedBox(
                               height: 38,
                               width: 26,
-                              child: Icon(
-                                Icons.arrow_forward,
-                                color: TDCTheme.darkText,
-                                size: 18,
-                              ),
+                              child: Icon(Icons.arrow_forward, color: TDCTheme.darkText, size: 18),
                             ),
                           ],
                         ),
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),

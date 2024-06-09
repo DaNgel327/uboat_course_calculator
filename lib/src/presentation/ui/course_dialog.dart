@@ -1,15 +1,11 @@
-import 'package:uboat_course_calculator/src/bloc/course_calculator_bloc.dart';
-import 'package:uboat_course_calculator/src/bloc/model/calculator_bloc_data.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uboat_course_calculator/src/constants/course_constants.dart';
 import 'package:uboat_course_calculator/src/constants/string_constants.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:uboat_course_calculator/src/presentation/cubits/course_parameters_cubit.dart';
+import 'package:uboat_course_calculator/src/presentation/models/calculator_data.dart';
+import 'package:uboat_course_calculator/src/themes/tdc_theme.dart';
 import 'package:uboat_course_calculator/src/utils/course_formatter.dart';
-
-import '../themes/tdc_theme.dart';
-
-// TODO: Replace with parameter value
-const course = 54;
 
 class CourseDialogView extends StatelessWidget {
   const CourseDialogView({
@@ -23,7 +19,6 @@ class CourseDialogView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bloc = Provider.of<CourseCalculatorBloc>(context);
     return AnimatedBuilder(
       animation: animationController,
       builder: (BuildContext context, _) {
@@ -31,9 +26,9 @@ class CourseDialogView extends StatelessWidget {
           opacity: animation,
           child: Transform(
             transform: Matrix4.translationValues(
-              0.0,
+              0,
               30 * (1.0 - animation.value),
-              0.0,
+              0,
             ),
             child: Padding(
               padding: const EdgeInsets.only(
@@ -46,22 +41,21 @@ class CourseDialogView extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: TDCTheme.white,
                   borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(8.0),
-                    bottomLeft: Radius.circular(8.0),
-                    bottomRight: Radius.circular(8.0),
-                    topRight: Radius.circular(68.0),
+                    topLeft: Radius.circular(8),
+                    bottomLeft: Radius.circular(8),
+                    bottomRight: Radius.circular(8),
+                    topRight: Radius.circular(68),
                   ),
                   gradient: const LinearGradient(
                     colors: <Color>[Colors.cyan, Colors.teal],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
-                    tileMode: TileMode.clamp,
                   ),
                   boxShadow: <BoxShadow>[
                     BoxShadow(
                       color: TDCTheme.grey.withOpacity(0.2),
                       offset: const Offset(1.1, 1.1),
-                      blurRadius: 10.0,
+                      blurRadius: 10,
                     ),
                   ],
                 ),
@@ -113,35 +107,29 @@ class CourseDialogView extends StatelessWidget {
                               ],
                             ),
                           ),
-                          StreamBuilder<CalculatorBlocData>(
-                              stream: bloc.stateStream,
-                              builder: (context, snapshot) {
-                                return Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.end,
-                                      children: <Widget>[
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                            left: 4,
-                                            bottom: 3,
-                                          ),
-                                          child: _TextWithValue(
-                                            data: snapshot.hasData
-                                                ? snapshot.requireData
-                                                : CalculatorBlocData.zero(),
-                                          ),
+                          BlocSelector<CourseParametersCubit, CourseParametersState,
+                              CalculatorData?>(
+                            selector: (state) => state.course,
+                            builder: (context, course) {
+                              return Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: <Widget>[
+                                      Padding(
+                                        padding: const EdgeInsets.only(left: 4, bottom: 3),
+                                        child: _TextWithValue(
+                                          data: course ?? CalculatorData.zero(),
                                         ),
-                                      ],
-                                    ),
-                                  ],
-                                );
-                              })
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              );
+                            },
+                          ),
                         ],
                       ),
                     ),
@@ -156,7 +144,7 @@ class CourseDialogView extends StatelessWidget {
                         height: 2,
                         decoration: const BoxDecoration(
                           color: TDCTheme.background,
-                          borderRadius: BorderRadius.all(Radius.circular(4.0)),
+                          borderRadius: BorderRadius.all(Radius.circular(4)),
                         ),
                       ),
                     ),
@@ -174,7 +162,7 @@ class CourseDialogView extends StatelessWidget {
 class _TextWithValue extends StatelessWidget {
   const _TextWithValue({required this.data});
 
-  final CalculatorBlocData data;
+  final CalculatorData data;
 
   @override
   Widget build(BuildContext context) {
